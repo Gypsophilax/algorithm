@@ -4,42 +4,53 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class QuickSort {
+public class MergeSort {
     static int n;
     static int[] nums;
+    static int[] tmp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(reader.readLine());
         nums = new int[n];
+        tmp = new int[n];
         String[] split = reader.readLine().split(" ");
         for (int i = 0; i < split.length; i++) {
             nums[i] = Integer.parseInt(split[i]);
         }
 
-        quickSort(0, n - 1);
+        mergeSort(0, n - 1);
         for (int i = 0; i < n; i++) {
             System.out.print(nums[i] + " ");
         }
     }
 
-    private static void quickSort(int l, int r) {
+    private static void mergeSort(int l, int r) {
         if (l >= r) {
             return;
         }
-        int i = l - 1, j = r + 1, x = nums[l + r >> 1]; // x 的值使用这种方法可以避免递归边界死循环的问题
-//        System.out.println("x,l,r: " + x + " " + l + " " + r);
-        while (i < j) {
-            do i++; while (nums[i] < x); // 如果用while循环的话，还需在swap的时候对 i, j进行处理，这样更优雅
-            do j--; while (nums[j] > x);
-            if (i < j) {
-                int tmp = nums[i];
-                nums[i] = nums[j];
-                nums[j] = tmp;
-
+        final int mid = r + l >> 1;
+        mergeSort(l, mid);
+        mergeSort(mid + 1, r);
+        int i = l, j = mid + 1, k = 0;
+        while (i <= mid && j <= r) {
+            if (nums[i] <= nums[j]) {
+                tmp[k++] = nums[i++];
+            } else {
+                tmp[k++] = nums[j++];
             }
         }
-        quickSort(l, j);
-        quickSort(j + 1, r);
+        while (i <= mid) {
+            tmp[k++] = nums[i++];
+        }
+        while (j <= r) {
+            tmp[k++] = nums[j++];
+        }
+        for (int m = l, n = 0; m <= r; m++, n++) {
+            nums[m] = tmp[n];
+        }
+
     }
+
+
 }
