@@ -27,7 +27,7 @@ public class QuickSort {
         if (l >= r) {
             return;
         }
-        int i = l - 1, j = r + 1, x = nums[l + r >> 1];
+        int i = l - 1, j = r + 1, x = nums[l + r >> 1]; // x 的值使用这种方法可以避免递归边界死循环的问题
 //        System.out.println("x,l,r: " + x + " " + l + " " + r);
         while (i < j) {
             do i++; while (nums[i] < x); // 如果用while循环的话，还需在swap的时候对 i, j进行处理，这样更优雅
